@@ -1,0 +1,122 @@
+# 📊 Accounting Data Analysis
+
+This repository contains Python scripts and Jupyter notebooks used for analyzing accounting datasets. The goal is to derive financial insights from raw accounting data such as transactions, ledgers, invoices, and balance sheets.
+
+## 🧾 Features
+
+- Data cleaning and preprocessing
+- Profit and loss analysis
+- Cash flow analysis
+- Customer and vendor balance summaries
+- Monthly and quarterly trends
+- Financial ratios (liquidity, profitability, efficiency)
+- Visualization using Matplotlib & Seaborn
+
+## 📁 Project Structure
+
+
+## 🧪 Sample Dataset Columns
+
+- `Date`
+- `Account`
+- `Description`
+- `Debit`
+- `Credit`
+- `Category`
+- `Vendor/Customer`
+- `Invoice ID`
+
+## 🛠️ Technologies Used
+
+- Python 3.x
+- Pandas
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/accounting-data-analysis.git
+   cd accounting-data-analysis
+pip install -r requirements.txt
+jupyter notebook notebooks/exploratory_analysis.ipynb
+
+---
+
+## 📄 `requirements.txt`
+
+```txt
+pandas
+matplotlib
+seaborn
+jupyter
+numpy
+import pandas as pd
+
+def clean_data(file_path):
+    df = pd.read_csv(file_path)
+    df.dropna(how='all', inplace=True)
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    df.fillna(0, inplace=True)
+    df['Amount'] = df['Credit'] - df['Debit']
+    return df
+
+if __name__ == "__main__":
+    df_clean = clean_data('../data/accounting_sample.csv')
+    print(df_clean.head())
+Date,Account,Description,Debit,Credit,Category,Vendor/Customer,Invoice ID
+2025-01-05,Sales,Product Sale,0,2500,Revenue,Customer A,INV001
+2025-01-07,Cost of Goods Sold,Inventory Expense,1200,0,Expense,Supplier X,EXP001
+2025-01-09,Office Supplies,Printer Paper,150,0,Expense,Office Depot,EXP002
+2025-01-10,Bank,Deposit,0,3000,Asset,Customer B,DEP001
+2025-01-12,Rent,January Office Rent,1000,0,Expense,Landlord Z,EXP003
+2025-01-15,Utilities,Electricity Bill,200,0,Expense,Utility Co,EXP004
+2025-01-18,Accounts Receivable,Customer Payment,0,1500,Asset,Customer A,INV002
+2025-01-20,Sales,Consulting Income,0,1800,Revenue,Customer C,INV003
+2025-01-22,Payroll,Staff Wages,2500,0,Expense,Staff,EXP005
+2025-01-25,Bank,Withdrawal for Rent,0,1000,Asset,Landlord Z,WD001
+2025-01-27,Marketing,Ad Campaign,400,0,Expense,Ad Agency,EXP006
+2025-01-29,Sales,Product Sale,0,2200,Revenue,Customer D,INV004
+2025-01-30,Cost of Goods Sold,Inventory Expense,1100,0,Expense,Supplier X,EXP007
+2025-02-01,Accounts Payable,Payment to Supplier,1300,0,Liability,Supplier X,PAY001
+2025-02-03,Sales,Product Sale,0,2750,Revenue,Customer E,INV005
+2025-02-05,Insurance,Business Insurance,600,0,Expense,InsureCo,EXP008
+2025-02-08,Bank,Deposit,0,3500,Asset,Customer E,DEP002
+import pandas as pd
+
+def clean_data(file_path):
+    df = pd.read_csv(file_path)
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['Amount'] = df['Credit'] - df['Debit']
+    df['Month'] = df['Date'].dt.to_period('M')
+    return df
+
+def generate_profit_loss(df):
+    monthly_summary = df.groupby(['Month', 'Category'])['Amount'].sum().unstack(fill_value=0)
+    monthly_summary['Net Profit'] = monthly_summary.get('Revenue', 0) - monthly_summary.get('Expense', 0)
+    return monthly_summary
+
+if __name__ == "__main__":
+    file_path = "data/accounting_sample.csv"
+    df_clean = clean_data(file_path)
+    report = generate_profit_loss(df_clean)
+    print("\n📊 Monthly Profit & Loss Summary:")
+    print(report)
+    report.to_csv("outputs/monthly_profit_loss_summary.csv")
+# 🧾 Accounting Data Exploratory Analysis
+
+This notebook performs step-by-step analysis on an accounting dataset.
+
+## 📥 Step 1: Load Libraries & Dataset
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv('../data/accounting_sample.csv')
+df['Date'] = pd.to_datetime(df['Date'])
+df['Amount'] = df['Credit'] - df['Debit']
+df['Month'] = df['Date'].dt.to_period('M')
+df.head()
